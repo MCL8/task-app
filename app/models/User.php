@@ -15,6 +15,9 @@ class User extends Model
         ]
     ];
 
+    /**
+     * @return bool
+     */
     public function login()
     {
         $login = !empty(trim($_POST['login'])) ? trim($_POST['login']) : null;

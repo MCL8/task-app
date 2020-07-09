@@ -20,6 +20,12 @@ class Task extends Model
         ],
     ];
 
+    /**
+     * @param string $user_name
+     * @param string $email
+     * @param string $text
+     * @return bool
+     */
     public function create(string $user_name, string $email, string $text)
     {
         $user_name = trim($user_name);
@@ -45,8 +51,15 @@ class Task extends Model
         return $result;
     }
 
+    /**
+     * @param $id
+     * @param $data
+     * @return bool
+     */
     public function update($id, $data)
     {
+        $data['text'] = htmlspecialchars($data['text']);
+
         $sql = "UPDATE {$this->table} " .
             'SET text = :text, status = :status, modified = :modified ' .
             'WHERE id = :id';

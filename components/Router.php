@@ -18,7 +18,7 @@ class Router
     /**
      * @return string
      */
-	private function getURI()
+	private function getURI(): string
 	{
 		if (!empty($_SERVER['REQUEST_URI'])) {
 			return $uri = trim($_SERVER['REQUEST_URI'], '/');
@@ -28,7 +28,7 @@ class Router
     /**
      * @return bool
      */
-	public function run()
+	public function run(): bool
 	{
 		$uri = $this->getURI();
 
