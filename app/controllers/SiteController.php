@@ -75,7 +75,7 @@ class SiteController extends Controller
 
         if (!$task->validate($data)) {
             $task->getErrors();
-            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/create');
+            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/task/create');
 
             return true;
         }
