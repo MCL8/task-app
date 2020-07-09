@@ -8,7 +8,6 @@ abstract class Model
     protected $pdo;
     protected $table;
     protected $primaryKey = 'id';
-    public $attributes = [];
     public $errors = [];
     public $rules = [];
 
@@ -22,21 +21,9 @@ abstract class Model
 
     /**
      * @param $data
-     */
-    public function load($data)
-    {
-        foreach ($this->attributes as $name => $value) {
-            if (isset($data[$name])) {
-                $this->attributes[$name] = $data[$name];
-            }
-        }
-    }
-
-    /**
-     * @param $data
      * @return bool
      */
-    public function validate($data)
+    public function validate($data): bool
     {
         Validator::lang('ru');
         $v = new Validator($data);
@@ -50,17 +37,8 @@ abstract class Model
         return false;
     }
 
-    public function save($table)
-    {
-        $tbl = \R::dispense($table);
 
-        foreach ($this->attributes as $name => $value) {
-            $tbl->$name = $value;
-        }
-        return \R::store($tbl);
-    }
-
-    public function getErrors()
+    public function getErrors(): void
     {
         $errors = '<ul>';
 
@@ -77,7 +55,7 @@ abstract class Model
      * @param string $sql
      * @return bool
      */
-    public function query(string $sql)
+    public function query(string $sql): bool
     {
         return $this->pdo->execute($sql);
     }
@@ -86,7 +64,7 @@ abstract class Model
      * @param string $orderBy
      * @return array
      */
-    public function findAll($start, $perpage, $orderBy = 'id')
+    public function findAll($start, $perpage, $orderBy = 'id'): array
     {
         $sql = "SELECT * FROM `{$this->table}` ORDER BY {$orderBy} LIMIT {$start}, {$perpage}";
 
@@ -105,8 +83,8 @@ abstract class Model
 
     /**
      * @param $id
-     * @param string $field
-     * @return array
+     * @param string|null $field
+     * @return mixed|null
      */
     public function findOne($id, ?string $field = '')
     {
@@ -121,27 +99,4 @@ abstract class Model
         return null;
     }
 
-    /**
-     * @param string $sql
-     * @param array $params
-     * @return array
-     */
-    public function findBySql(string $sql, ?array $params = [])
-    {
-        return $this->pdo->query($sql, $params);
-    }
-
-    /**
-     * @param string $pattern
-     * @param string $field
-     * @param string $table
-     * @return array
-     */
-    public function findLike(string $pattern, string $field, ?string $table = '')
-    {
-        $table = $table ?: $this->table;
-        $sql = "SELECT * FROM $table WHERE $field LIKE ?";
-
-        return $this->pdo->query($sql, ['%' . $pattern . '%']);
-    }
 }
