@@ -13,12 +13,6 @@
             </div>
         <?php endif; ?>
 
-        <?php if ($admin): ?>
-            <a href="/user/logout">Выйти из профиля админа</a>
-        <?php else: ?>
-            <a href="/user/login">Вход для администратора</a>
-        <?php endif; ?>
-
         <p>Сортировка</p>
         <select id="sort" class="custom-select" onchange="sort(this)">
             <option value="user_name">Имя пользователя по возрастанию</option>
@@ -32,6 +26,7 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col">Имя пользователя</th>
                     <th scope="col">Email</th>
                     <th scope="col">Текст задачи</th>
@@ -45,6 +40,7 @@
             <tbody>
                 <?php foreach ($taskList as $task): ?>
                     <tr>
+                        <td><?=$task['status'] == 'Выполнена' ? '&#10004;' : ''?></td>
                         <td><?=$task['user_name']?></td>
                         <td><?=$task['email']?></td>
                         <td><?=$task['text']?></td>
@@ -62,8 +58,14 @@
             <?=$pagination?>
         <?php endif; ?>
 
-        <a href="/task/create" class="btn btn-primary">Создать задачу</a>
-
+        <div class="d-flex justify-content-between">
+            <a href="/task/create" class="btn btn-primary">Создать задачу</a>
+            <?php if ($admin): ?>
+                <a href="/user/logout" class="btn btn-primary">Выйти из профиля админа</a>
+            <?php else: ?>
+                <a href="/user/login" class="btn btn-primary">Вход для администратора</a>
+            <?php endif; ?>
+        </div>
     </div>
     <script src="/js/app.js"></script>
 </body>
